@@ -37,7 +37,7 @@ for o in vetorErros:
             navegador = webdriver.Chrome(options=chromeOptions, service=chromeService)
             navegador.get(articleLink)
 
-            sleep(30)
+            sleep(5)
 
             try:
                 btnAcceptCookies = navegador.find_element(By.ID, "onetrust-accept-btn-handler")
