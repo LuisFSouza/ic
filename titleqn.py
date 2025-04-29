@@ -22,7 +22,7 @@ with open('saidas.txt', 'r', encoding='utf-8') as arquivo:
                 dicionario[chave] = [linha]
 
 
-conexao = psycopg2.connect(host="localhost", user="postgres", password="1234", database="qntestes_arquivos")
+conexao = psycopg2.connect(host="localhost", user="postgres", password="1234", database="qnnovo")
 cursor = conexao.cursor()
 cursor.execute("select title, volume, issue, cod from documents where yearpublished >= 1995 and titleqn is null")
 for result in cursor.fetchall():
