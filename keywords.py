@@ -4,7 +4,7 @@ from nltk.corpus import stopwords;
 from nltk.tokenize import word_tokenize;
 import string
 
-conexao = psycopg2.connect(host="localhost", user="postgres", password="1234", database="qntestes_arquivos")
+conexao = psycopg2.connect(host="localhost", user="postgres", password="1234", database="qnnovo")
 cursor = conexao.cursor()
 cursor.execute("select keyword from keywords")
 resultado = cursor.fetchall()
