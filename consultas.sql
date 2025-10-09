@@ -233,3 +233,17 @@ GROUP BY yearPublished
 HAVING
 AVG(LENGTH(abstract)) IS NOT NULL
 ORDER BY yearPublished
+
+SELECT yearpublished, titleqn, frase, symbol FROM
+(SELECT k.yearpublished, k.titleqn, k,frase, c.symbol
+FROM chemicalelements AS c, 
+(
+SELECT e.titleqn, e.frase, e.yearpublished, TRIM(regexp_split_to_table(e.frase, '[\s]+')) AS palavra
+FROM 
+(
+SELECT titleqn, yearpublished, TRIM(regexp_split_to_table(titleqn, '(: )|(- )|(\. )')) AS frase
+FROM documents
+) e
+) k
+WHERE k.palavra LIKE unaccent(c.symbol)) d
+WHERE d.frase ~ ('^' || d.symbol || ' ')
