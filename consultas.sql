@@ -99,7 +99,7 @@ GROUP BY e.palavra
 ORDER BY  qtddPalavras DESC
 LIMIT 10
 
--- Numero de palavras terminadas em ção por ano --
+-- Numero de palavras terminadas em "ção" por ano --
 SELECT e.yearPublished, COUNT(e.cod) qtddpalavrascao FROM
 (SELECT cod, yearPublished, TRIM(regexp_split_to_table(cleantitleqn, '\s+')) AS palavra
 FROM documents WHERE language='pt' AND yearpublished <= 2024) e
@@ -107,7 +107,7 @@ WHERE e.palavra ~ 'ção$'
 GROUP BY e.yearPublished
 ORDER BY e.yearPublished
 
--- Numero de palavras não terminadas em ção por ano --
+-- Numero de palavras não terminadas em "ção" por ano --
 SELECT e.yearPublished, COUNT(e.cod) qtddpalavrasnaocao FROM
 (SELECT cod, yearPublished, regexp_split_to_table(cleantitleqn, '\s+') AS palavra
 FROM documents WHERE language='pt' AND yearpublished <= 2024) e
@@ -238,6 +238,7 @@ FROM
 (SELECT TRIM(regexp_split_to_table(RTRIM(abstract, '.'), '[\.]+')) AS frase
 FROM documents WHERE yearPublished <= 2024) AS frases
 
+-- Tamanho médio de frases do abstract por ano --
 SELECT p.yearPublished, ROUND(AVG(LENGTH(p.frase))) as mediaTamanhoFrasesAbstract FROM
 (SELECT yearPublished, TRIM(regexp_split_to_table(RTRIM(abstract, '.'), '[\.]+')) AS frase
 FROM documents WHERE yearPublished <= 2024) p
@@ -287,5 +288,3 @@ FROM documents
 ) k
 WHERE k.palavra LIKE unaccent(c.symbol)) d
 WHERE d.frase ~ ('^' || d.symbol || ' ')
-
-
