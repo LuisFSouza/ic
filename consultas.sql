@@ -211,11 +211,19 @@ FROM
 (SELECT TRIM(regexp_split_to_table(RTRIM(abstract, '.'), '[\.]+')) AS frase
 FROM documents WHERE yearPublished <= 2024) AS frases
 
-SELECT p.yearPublished, ROUND(AVG(LENGTH(p.frase))) as mediaNumeroFrasesAbstract FROM
+SELECT p.yearPublished, ROUND(AVG(LENGTH(p.frase))) as mediaTamanhoFrasesAbstract FROM
 (SELECT yearPublished, TRIM(regexp_split_to_table(RTRIM(abstract, '.'), '[\.]+')) AS frase
 FROM documents WHERE yearPublished <= 2024) p
 GROUP BY p.yearPublished
 ORDER BY yearPublished
+
+SELECT q.yearPublished, ROUND(AVG(q.qtddFrases)) as mediaNumeroFrasesAbstract FROM
+(SELECT p.yearPublished, p.cod, COUNT(p.frase) as qtddFrases FROM
+(SELECT cod, yearPublished, TRIM(regexp_split_to_table(RTRIM(abstract, '.'), '[\.]+')) AS frase
+FROM documents WHERE yearPublished <= 2024) p
+GROUP BY p.yearPublished, p.cod) q
+GROUP BY q.yearPublished
+ORDER BY q.yearPublished
 
 SELECT r.yearPublished, ROUND(AVG(r.qtddpalavrasfrase)) as medianumeropalavrasporfrase FROM (
 SELECT q.yearPublished, q.frase, COUNT(cod) as qtddpalavrasfrase FROM
@@ -247,3 +255,4 @@ FROM documents
 ) k
 WHERE k.palavra LIKE unaccent(c.symbol)) d
 WHERE d.frase ~ ('^' || d.symbol || ' ')
+
